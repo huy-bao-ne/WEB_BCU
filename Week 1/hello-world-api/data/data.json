@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "language": "english",
+    "greeting": "Hello"
+  },
+  {
+    "id": 2,
+    "language": "hello",
+    "greeting": "kokoko"
+  }
+]
