@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TodoApp - Modern Task Manager</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1><i class="fas fa-tasks"></i> TodoApp</h1>
+      <div class="stats">
+        <span class="stat">
+          <i class="fas fa-list"></i>
+          <span id="totalTasks">0</span> Total
+        </span>
+        <span class="stat">
+          <i class="fas fa-check-circle"></i>
+          <span id="completedTasks">0</span> Completed
+        </span>
+        <span class="stat">
+          <i class="fas fa-clock"></i>
+          <span id="pendingTasks">0</span> Pending
+        </span>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="input-section">
+        <div class="input-group">
+          <input 
+            id="taskInput" 
+            type="text" 
+            placeholder="What needs to be done?" 
+            maxlength="100"
+          />
+          <button id="addBtn" onclick="addTask()">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input 
+            id="searchInput" 
+            type="text" 
+            placeholder="Search tasks..." 
+            oninput="searchTasks()"
+          />
+        </div>
+        <div class="filter-buttons">
+          <button class="filter-btn active" onclick="filterTasks('all')">All</button>
+          <button class="filter-btn" onclick="filterTasks('pending')">Pending</button>
+          <button class="filter-btn" onclick="filterTasks('completed')">Completed</button>
+        </div>
+      </div>
+
+      <div class="tasks-section">
+        <ul id="taskList" class="task-list"></ul>
+        <div id="emptyState" class="empty-state">
+          <i class="fas fa-clipboard-list"></i>
+          <h3>No tasks yet</h3>
+          <p>Add your first task above to get started!</p>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>&copy; Built with Huy Bảo</p>
+    </footer>
+  </div>
+
+  <!-- Edit Modal -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Edit Task</h3>
+        <button class="close-btn" onclick="closeEditModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input id="editTaskInput" type="text" placeholder="Task title..." />
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeEditModal()">Cancel</button>
+        <button class="btn-primary" onclick="saveEdit()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
