@@ -2,10 +2,13 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+app.use(express.static('public'));
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected'))
@@ -19,7 +22,6 @@ const taskSchema = new mongoose.Schema({
 });
 const Task = mongoose.model('Task', taskSchema);
 
-// Get all tasks
 app.get('/api/tasks', async (req, res) => {
   try {
     const tasks = await Task.find().sort({ createdAt: -1 });
@@ -29,7 +31,6 @@ app.get('/api/tasks', async (req, res) => {
   }
 });
 
-// Add a task
 app.post('/api/tasks', async (req, res) => {
   try {
     const { title } = req.body;
@@ -50,13 +51,11 @@ app.post('/api/tasks', async (req, res) => {
   }
 });
 
-// Mark task as complete or update task
 app.put('/api/tasks/:id', async (req, res) => {
   try {
     const { title } = req.body;
     
     if (title !== undefined) {
-      // Update task title
       const task = await Task.findByIdAndUpdate(
         req.params.id, 
         { title }, 
@@ -67,7 +66,6 @@ app.put('/api/tasks/:id', async (req, res) => {
       }
       res.json(task);
     } else {
-      // Toggle completion status
       const task = await Task.findById(req.params.id);
       if (!task) {
         return res.status(404).json({ error: 'Task not found' });
@@ -81,7 +79,6 @@ app.put('/api/tasks/:id', async (req, res) => {
   }
 });
 
-// Delete task
 app.delete('/api/tasks/:id', async (req, res) => {
   try {
     const task = await Task.findByIdAndDelete(req.params.id);
@@ -92,6 +89,10 @@ app.delete('/api/tasks/:id', async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+});
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.listen(process.env.PORT || 3000, () => {

@@ -1,11 +1,9 @@
-const API_URL = 'http://localhost:3000/api/tasks';
+const API_URL = window.location.origin + '/api/tasks';
 
-// Global variables
 let tasks = [];
 let currentFilter = 'all';
 let editingTaskId = null;
 
-// DOM elements
 const taskInput = document.getElementById('taskInput');
 const taskList = document.getElementById('taskList');
 const searchInput = document.getElementById('searchInput');
@@ -13,41 +11,34 @@ const emptyState = document.getElementById('emptyState');
 const editModal = document.getElementById('editModal');
 const editTaskInput = document.getElementById('editTaskInput');
 
-// Stats elements
 const totalTasksSpan = document.getElementById('totalTasks');
 const completedTasksSpan = document.getElementById('completedTasks');
 const pendingTasksSpan = document.getElementById('pendingTasks');
 
-// Initialize app
 document.addEventListener('DOMContentLoaded', () => {
   loadTasks();
   setupEventListeners();
 });
 
-// Event listeners
 function setupEventListeners() {
-  // Enter key support for adding tasks
   taskInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
       addTask();
     }
   });
 
-  // Enter key support for editing tasks
   editTaskInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
       saveEdit();
     }
   });
 
-  // Close modal when clicking outside
   editModal.addEventListener('click', (e) => {
     if (e.target === editModal) {
       closeEditModal();
     }
   });
 
-  // Escape key to close modal
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       closeEditModal();
@@ -55,7 +46,6 @@ function setupEventListeners() {
   });
 }
 
-// Load tasks from API
 async function loadTasks() {
   try {
     showLoading();
@@ -73,7 +63,6 @@ async function loadTasks() {
   }
 }
 
-// Add new task
 async function addTask() {
   const title = taskInput.value.trim();
   
@@ -108,7 +97,6 @@ async function addTask() {
   }
 }
 
-// Toggle task completion
 async function toggleTask(id) {
   try {
     const response = await fetch(`${API_URL}/${id}`, { 
@@ -124,7 +112,6 @@ async function toggleTask(id) {
   }
 }
 
-// Delete task
 async function deleteTask(id) {
   if (!confirm('Are you sure you want to delete this task?')) {
     return;
@@ -148,7 +135,6 @@ async function deleteTask(id) {
   }
 }
 
-// Edit task functions
 function openEditModal(id, currentTitle) {
   editingTaskId = id;
   editTaskInput.value = currentTitle;
@@ -196,11 +182,9 @@ async function saveEdit() {
   }
 }
 
-// Filter tasks
 function filterTasks(filter) {
   currentFilter = filter;
   
-  // Update filter buttons
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.classList.remove('active');
   });
@@ -209,12 +193,10 @@ function filterTasks(filter) {
   renderTasks();
 }
 
-// Search tasks
 function searchTasks() {
   renderTasks();
 }
 
-// Render tasks
 function renderTasks() {
   const searchTerm = searchInput.value.toLowerCase();
   
@@ -288,7 +270,6 @@ function renderTasks() {
   });
 }
 
-// Update statistics
 function updateStats() {
   const total = tasks.length;
   const completed = tasks.filter(task => task.completed).length;
@@ -299,7 +280,6 @@ function updateStats() {
   pendingTasksSpan.textContent = pending;
 }
 
-// Utility functions
 function escapeHtml(text) {
   const div = document.createElement('div');
   div.textContent = text;
@@ -323,7 +303,6 @@ function showError(message) {
 }
 
 function showNotification(message, type) {
-  // Remove existing notifications
   const existingNotifications = document.querySelectorAll('.notification');
   existingNotifications.forEach(notif => notif.remove());
 
@@ -337,7 +316,6 @@ function showNotification(message, type) {
     </button>
   `;
 
-  // Add notification styles
   notification.style.cssText = `
     position: fixed;
     top: 20px;
@@ -368,7 +346,6 @@ function showNotification(message, type) {
 
   document.body.appendChild(notification);
 
-  // Auto remove after 5 seconds
   setTimeout(() => {
     if (notification.parentElement) {
       notification.remove();
@@ -376,7 +353,6 @@ function showNotification(message, type) {
   }, 5000);
 }
 
-// Add slide-in animation
 const style = document.createElement('style');
 style.textContent = `
   @keyframes slideIn {
