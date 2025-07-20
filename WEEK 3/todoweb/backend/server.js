@@ -10,9 +10,29 @@ app.use(express.json());
 
 app.use(express.static('public'));
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB connected'))
-  .catch((err) => console.error('MongoDB connection error:', err));
+if (!process.env.MONGO_URI) {
+  console.error('MONGO_URI environment variable is not defined');
+  process.exit(1);
+}
+
+console.log('Attempting to connect to MongoDB...');
+console.log('MONGO_URI exists:', !!process.env.MONGO_URI);
+
+mongoose.connect(process.env.MONGO_URI, {
+  serverSelectionTimeoutMS: 30000,
+  connectTimeoutMS: 30000,
+  socketTimeoutMS: 30000,
+})
+  .then(() => console.log('MongoDB connected successfully'))
+  .catch((err) => {
+    console.error('MongoDB connection error:', err);
+    console.error('Using mock data instead...');
+  });
+
+const mockTasks = [
+  { _id: '1', title: 'Sample Task 1', completed: false, createdAt: new Date() },
+  { _id: '2', title: 'Sample Task 2', completed: true, createdAt: new Date() }
+];
 
 const taskSchema = new mongoose.Schema({
   title: { type: String, required: true, maxlength: 100 },
