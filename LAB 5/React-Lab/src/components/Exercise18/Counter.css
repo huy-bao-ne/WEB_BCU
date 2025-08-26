@@ -1,0 +1,103 @@
+.counter {
+  max-width: 400px;
+  margin: 30px auto;
+  padding: 40px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.counter::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: shimmer 6s ease-in-out infinite;
+}
+
+.counter h2 {
+  color: white;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  font-weight: 700;
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.counter-display {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  padding: 30px;
+  margin: 20px 0;
+  position: relative;
+  z-index: 2;
+  backdrop-filter: blur(10px);
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.counter-value {
+  font-size: 4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 20px 0;
+}
+
+.counter button {
+  margin: 8px;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 2;
+}
+
+.counter button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.counter button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+@keyframes shimmer {
+  0%, 100% {
+    transform: rotate(0deg);
+    opacity: 0.3;
+  }
+  50% {
+    transform: rotate(180deg);
+    opacity: 0.1;
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .counter {
+    margin: 20px;
+    padding: 30px 20px;
+  }
+  
+  .counter-value {
+    font-size: 3rem;
+  }
+}
